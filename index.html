@@ -22,11 +22,15 @@
         .scene {
             position: absolute;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity 1.2s ease-in-out;
             text-align: center;
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .active {
@@ -34,39 +38,81 @@
             z-index: 10;
         }
 
-        /* Typography */
+        /* SCENE 1: Scrolling Months */
+        .scroller-window {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            /* Fades the top and bottom of the scrolling list */
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+        }
+
+        .months-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Starts lower down to show earlier months */
+            transform: translateY(140px); 
+            transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* The class added by JS to trigger the scroll */
+        .months-wrapper.scroll-up {
+            transform: translateY(-135px); /* Lands perfectly on November */
+        }
+
+        .month-item {
+            font-size: 2.2rem;
+            color: #444; /* Dim color for passing months */
+            margin: 12px 0;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: color 0.8s, font-size 0.8s, text-shadow 0.8s;
+        }
+
+        .month-item.glow {
+            color: #E8D399;
+            font-size: 3rem;
+            text-shadow: 0 0 15px rgba(232, 211, 153, 0.6);
+        }
+
+        .date-reveal {
+            opacity: 0;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 10px;
+            letter-spacing: 4px;
+            font-family: sans-serif;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .date-reveal.show {
+            opacity: 1;
+        }
+
+        /* SCENE 2: Typography */
         h1 {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-style: italic;
-            margin: 10px 0;
+            margin: 0;
+            line-height: 1.2;
             text-shadow: 0 0 10px rgba(232, 211, 153, 0.3);
         }
-        
-        .dim-text {
-            color: #333;
-            font-size: 1.5rem;
-        }
 
-        .date-sub {
-            font-size: 1.2rem;
-            color: #fff;
-            letter-spacing: 4px;
-            margin-top: -10px;
-        }
-
-        /* Photo Grid Layout */
+        /* SCENE 3: Photo Grid Layout */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            max-width: 350px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 320px;
         }
 
-        /* Image Placeholders */
         .photo-box {
             border: 1px solid #E8D399;
-            height: 160px;
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -74,7 +120,7 @@
             color: #555;
             font-family: sans-serif;
             font-size: 0.8rem;
-            border-radius: 4px;
+            border-radius: 6px;
             background-size: cover;
             background-position: center;
         }
@@ -82,66 +128,64 @@
 </head>
 <body>
 
-    <!-- SCENE 1: The Month Reveal -->
+    <!-- SCENE 1: Scrolling Months & Date -->
     <div id="scene1" class="scene active">
-        <div class="dim-text">OCTOBER</div>
-        <h1 style="font-size: 4rem; letter-spacing: 2px;">NOVEMBER</h1>
-        <div class="dim-text">DECEMBER</div>
+        <div class="scroller-window">
+            <div class="months-wrapper" id="monthScroller">
+                <div class="month-item">AUGUST</div>
+                <div class="month-item">SEPTEMBER</div>
+                <div class="month-item">OCTOBER</div>
+                <div class="month-item" id="targetMonth">NOVEMBER</div>
+                <div class="month-item">DECEMBER</div>
+            </div>
+        </div>
+        <div class="date-reveal" id="dateText">06 / 11</div>
     </div>
 
     <!-- SCENE 2: The Main Wish -->
     <div id="scene2" class="scene">
-        <h1>Happy Birthday<br>Haju!</h1>
-        <p class="date-sub">06.11.2004</p>
+        <h1>Happy<br>Birthday<br>Haju!</h1>
     </div>
 
-    <!-- SCENE 3: The Photo Grid (Add your image URLs here later) -->
+    <!-- SCENE 3: The Photo Grid -->
     <div id="scene3" class="scene">
         <div class="grid">
-            <!-- To add images later, replace the background color with a background-image style. -->
-            <!-- Example: <div class="photo-box" style="background-image: url('YOUR_IMAGE_LINK.jpg');"></div> -->
-            <div class="photo-box">Image 1 Space</div>
-            <div class="photo-box">Image 2 Space</div>
-            <div class="photo-box">Image 3 Space</div>
-            <div class="photo-box">Image 4 Space</div>
+            <!-- Add images later by replacing the background color with a background-image style. -->
+            <div class="photo-box">Pic 1</div>
+            <div class="photo-box">Pic 2</div>
+            <div class="photo-box">Pic 3</div>
+            <div class="photo-box">Pic 4</div>
         </div>
     </div>
 
-    <!-- SCENE 4: Warm Wishes -->
-    <div id="scene4" class="scene">
-        <h2>May all your dreams come true.</h2>
-        <p style="color: #fff; font-family: sans-serif; font-weight: 300;">Stay blessed, stay happy,<br>and keep shining always. ✨</p>
-    </div>
-
-    <!-- JavaScript to Sequence the "Video" -->
+    <!-- JavaScript to Sequence the Animation -->
     <script>
-        // Array of scenes in order
-        const scenes = ['scene1', 'scene2', 'scene3', 'scene4'];
-        
-        // How long each scene stays on screen (in milliseconds)
-        const timings = [3000, 3500, 5000, 5000]; 
-        
-        let currentSceneIndex = 0;
-
-        function playNextScene() {
-            // Fade out current scene
-            document.getElementById(scenes[currentSceneIndex]).classList.remove('active');
+        // Timeline Logic
+        window.onload = () => {
             
-            // Move to next scene
-            currentSceneIndex++;
-            
-            // If there is a next scene, fade it in after a tiny delay
-            if(currentSceneIndex < scenes.length) {
-                setTimeout(() => {
-                    document.getElementById(scenes[currentSceneIndex]).classList.add('active');
-                    // Schedule the next transition
-                    setTimeout(playNextScene, timings[currentSceneIndex]);
-                }, 500); // 500ms delay for a smooth crossfade effect
-            }
-        }
+            // Step 1: Start scrolling the months after 500ms
+            setTimeout(() => {
+                document.getElementById('monthScroller').classList.add('scroll-up');
+            }, 500);
 
-        // Start the sequence timer for the first scene
-        setTimeout(playNextScene, timings[0]);
+            // Step 2: Highlight NOVEMBER and reveal 06/11 after the scroll finishes (2.5 seconds later)
+            setTimeout(() => {
+                document.getElementById('targetMonth').classList.add('glow');
+                document.getElementById('dateText').classList.add('show');
+            }, 2600);
+
+            // Step 3: Transition to "Happy Birthday Haju!"
+            setTimeout(() => {
+                document.getElementById('scene1').classList.remove('active');
+                document.getElementById('scene2').classList.add('active');
+            }, 5500);
+
+            // Step 4: Transition to the Images
+            setTimeout(() => {
+                document.getElementById('scene2').classList.remove('active');
+                document.getElementById('scene3').classList.add('active');
+            }, 8500);
+        };
     </script>
 </body>
 </html>
