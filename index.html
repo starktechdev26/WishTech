@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Haju</title>
+    <style>
+        /* Base Aesthetic - Dark & Elegant */
+        body {
+            background-color: #0a0a0a;
+            color: #E8D399; /* Gold color */
+            font-family: 'Playfair Display', Georgia, serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Scene Setup for Animation */
+        .scene {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 3.5rem;
+            font-style: italic;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(232, 211, 153, 0.3);
+        }
+        
+        .dim-text {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .date-sub {
+            font-size: 1.2rem;
+            color: #fff;
+            letter-spacing: 4px;
+            margin-top: -10px;
+        }
+
+        /* Photo Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        /* Image Placeholders */
+        .photo-box {
+            border: 1px solid #E8D399;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+            color: #555;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCENE 1: The Month Reveal -->
+    <div id="scene1" class="scene active">
+        <div class="dim-text">OCTOBER</div>
+        <h1 style="font-size: 4rem; letter-spacing: 2px;">NOVEMBER</h1>
+        <div class="dim-text">DECEMBER</div>
+    </div>
+
+    <!-- SCENE 2: The Main Wish -->
+    <div id="scene2" class="scene">
+        <h1>Happy Birthday<br>Haju!</h1>
+        <p class="date-sub">06.11.2004</p>
+    </div>
+
+    <!-- SCENE 3: The Photo Grid (Add your image URLs here later) -->
+    <div id="scene3" class="scene">
+        <div class="grid">
+            <!-- To add images later, replace the background color with a background-image style. -->
+            <!-- Example: <div class="photo-box" style="background-image: url('YOUR_IMAGE_LINK.jpg');"></div> -->
+            <div class="photo-box">Image 1 Space</div>
+            <div class="photo-box">Image 2 Space</div>
+            <div class="photo-box">Image 3 Space</div>
+            <div class="photo-box">Image 4 Space</div>
+        </div>
+    </div>
+
+    <!-- SCENE 4: Warm Wishes -->
+    <div id="scene4" class="scene">
+        <h2>May all your dreams come true.</h2>
+        <p style="color: #fff; font-family: sans-serif; font-weight: 300;">Stay blessed, stay happy,<br>and keep shining always. ✨</p>
+    </div>
+
+    <!-- JavaScript to Sequence the "Video" -->
+    <script>
+        // Array of scenes in order
+        const scenes = ['scene1', 'scene2', 'scene3', 'scene4'];
+        
+        // How long each scene stays on screen (in milliseconds)
+        const timings = [3000, 3500, 5000, 5000]; 
+        
+        let currentSceneIndex = 0;
+
+        function playNextScene() {
+            // Fade out current scene
+            document.getElementById(scenes[currentSceneIndex]).classList.remove('active');
+            
+            // Move to next scene
+            currentSceneIndex++;
+            
+            // If there is a next scene, fade it in after a tiny delay
+            if(currentSceneIndex < scenes.length) {
+                setTimeout(() => {
+                    document.getElementById(scenes[currentSceneIndex]).classList.add('active');
+                    // Schedule the next transition
+                    setTimeout(playNextScene, timings[currentSceneIndex]);
+                }, 500); // 500ms delay for a smooth crossfade effect
+            }
+        }
+
+        // Start the sequence timer for the first scene
+        setTimeout(playNextScene, timings[0]);
+    </script>
+</body>
+</html>
